@@ -125,13 +125,13 @@ char** measure(int ud, double* swp, int len, int buffersize){
 int savedata(int ud, char* filename, char* hdata, char* oscdata, char** DATA, int len){
 
   // Construct a header. Probaby not the most efficient method
-  char* header = malloc(8*sizeof(char));
+  char* header = malloc(16*sizeof(char));
   strcpy(header, "Vb");
   strcat(header, "\t\t");
 
   int i,j;
   int split = (strlen(hdata)+1)/2;
-  char* tmp = malloc(8*sizeof(char));
+  char* tmp = malloc(16*sizeof(char));
   tmp[0]='\0';
 
   j=0;

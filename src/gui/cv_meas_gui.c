@@ -152,7 +152,7 @@ static void CALOPEN(GtkWidget *widget, GTKwrapper *state){
   }
 }
 static void CALSHOR(GtkWidget *widget, GTKwrapper *state){
-  if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(state->MOD[1]))){
+  if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(state->MOD[2]))){
     calShort(gpibHANDLE);
   }
 }
