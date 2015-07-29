@@ -273,19 +273,40 @@ static void SETSWP(GtkWidget *widget, GTKwrapper *state){
   if (MIN < -40.0){MIN = -40;}
   if (MAX >  40.0){MAX =  40;}
 
-  double delta = (MAX-MIN)/(double)NPT;
-  state->swp  = malloc((NPT+1)*sizeof(double));
-  state->len  = NPT+1;
+  // Hysteresis Mode
+  if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(state->SWP[4]))){
+    double delta = (MAX-MIN)/(double)NPT;
+    state->swp  = malloc((2*NPT+1)*sizeof(double));
+    state->len  = 2*NPT+1;
+    
+    int i;
+    for ( i = 0; i <= NPT; i++ ) {
+      memcpy(&state->swp[i],&MIN, sizeof(double));
+      MIN+=delta;
+    }
+    MIN-=delta;
+    for ( i = 1; i < NPT+1; i++ ){
+      MIN-=delta;
+      memcpy(&state->swp[NPT+i],&MIN, sizeof(double));
+    }
+  }
 
-  int i;
-  for ( i = 0; i <= NPT; i++ ) {
-    memcpy(&state->swp[i],&MIN, sizeof(double));
-    MIN+=delta;
+  // Regular Mode
+  else{
+    double delta = (MAX-MIN)/(double)NPT;
+    state->swp  = malloc((NPT+1)*sizeof(double));
+    state->len  = NPT+1;
+    
+    int i;
+    for ( i = 0; i <= NPT; i++ ) {
+      memcpy(&state->swp[i],&MIN, sizeof(double));
+      MIN+=delta;
+    }
   }
 }
 
 static void generateSWEEP(GTKwrapper* state){
-  state->SWP = g_new(GtkWidget*, 4);
+  state->SWP = g_new(GtkWidget*, 5);
  
   // Frequency Selector
   state->SWP[0] = gtk_entry_new();
@@ -314,6 +335,12 @@ static void generateSWEEP(GTKwrapper* state){
   gtk_fixed_put(GTK_FIXED(state->fixed), state->SWP[3], X4, Y3+20);
   gtk_widget_set_size_request(state->SWP[3], BWIDTH, BHEIGHT);
 
+  const gchar *hist; 
+  hist = "Hysteresis";
+  state->SWP[4] = gtk_check_button_new_with_label(hist);
+  gtk_fixed_put(GTK_FIXED(state->fixed), state->SWP[4], X4, Y3-10);
+  g_signal_connect(state->SWP[4],"toggled", G_CALLBACK(CALSHOR), state);
+
   state->swpLABELS = g_new(GtkWidget*, 3);
   state->swpLABELS[0] = gtk_label_new("Min (V)");
   gtk_fixed_put(GTK_FIXED(state->fixed), state->swpLABELS[0], X1, Y3);
@@ -321,6 +348,9 @@ static void generateSWEEP(GTKwrapper* state){
   gtk_fixed_put(GTK_FIXED(state->fixed), state->swpLABELS[1], X2, Y3);
   state->swpLABELS[2] = gtk_label_new("Npoints");
   gtk_fixed_put(GTK_FIXED(state->fixed), state->swpLABELS[2], X3, Y3);
+
+
+
 
 }
 
