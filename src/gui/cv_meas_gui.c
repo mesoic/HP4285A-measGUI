@@ -272,6 +272,7 @@ static void SETSWP(GtkWidget *widget, GTKwrapper *state){
   
   if (MIN < -40.0){MIN = -40;}
   if (MAX >  40.0){MAX =  40;}
+  free(state->swp);
 
   // Hysteresis Mode
   if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(state->SWP[4]))){
