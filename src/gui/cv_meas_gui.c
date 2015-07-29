@@ -365,14 +365,14 @@ static void SAVEDATA(GtkWidget* saveBUTTON, GTKwrapper* state){
   char* FREQ =  (char*)gtk_entry_get_text((GtkEntry*)state->OSC[0]);
   char* AMPL =  (char*)gtk_entry_get_text((GtkEntry*)state->OSC[1]);
   
-  char oscdata[32]; 
+  char oscdata[64] = "\0"; 
   strcpy(oscdata,"*\n");
   strcat(oscdata,"* FREQ = ");
   strcat(oscdata, FREQ);
   strcat(oscdata,"MHZ AMPL = ");
   strcat(oscdata, AMPL);
   strcat(oscdata,"V\n");
-
+  
   //strcpy(tmpString, state->listSTR);
   int INC = (int)gtk_switch_get_active ((GtkSwitch*)state->saveINC);
   if (INC) {
