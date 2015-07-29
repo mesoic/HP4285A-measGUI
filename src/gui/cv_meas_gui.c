@@ -339,7 +339,6 @@ static void generateSWEEP(GTKwrapper* state){
   hist = "Hysteresis";
   state->SWP[4] = gtk_check_button_new_with_label(hist);
   gtk_fixed_put(GTK_FIXED(state->fixed), state->SWP[4], X4, Y3-10);
-  g_signal_connect(state->SWP[4],"toggled", G_CALLBACK(CALSHOR), state);
 
   state->swpLABELS = g_new(GtkWidget*, 3);
   state->swpLABELS[0] = gtk_label_new("Min (V)");
@@ -348,10 +347,6 @@ static void generateSWEEP(GTKwrapper* state){
   gtk_fixed_put(GTK_FIXED(state->fixed), state->swpLABELS[1], X2, Y3);
   state->swpLABELS[2] = gtk_label_new("Npoints");
   gtk_fixed_put(GTK_FIXED(state->fixed), state->swpLABELS[2], X3, Y3);
-
-
-
-
 }
 
 ////////////////////////////
